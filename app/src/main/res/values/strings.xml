@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Bunker</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="start">Սկսել</string>
+    <string name="exit">Ելք</string>
+    <string name="app_name_am">ԲՈւՆԿԵՐ</string>
+    <string name="profession">Մասնագ.:</string>
+    <string name="age">Տարիք։</string>
+    <string name="user_info">Անձնական Տվյալներ</string>
+    <string name="phobia">Վախ։</string>
+    <string name="illness">Հիվանդ․։</string>
+    <string name="hobby">Հոբբի։</string>
+    <string name="baggage">Ճամպրուկ։</string>
+    <string name="add_info">հավ․ ինֆ․։</string>
+    <string name="add">ավելացնել</string>
+    <string name="nickname">Մականուն</string>
+    <string name="email_address">Էլ․ հասցե</string>
+    <string name="teammates">Թմի Անդամներ</string>
+    <string name="teammates_info">Թմի Անդամի Տվյալներ</string>
+</resources>
