@@ -52,6 +52,14 @@
                     android:textColor="@color/brown"
                     android:textColorHint="@color/brown"
                     android:textColorHighlight="@color/brown"
+                    app:boxStrokeColor="@color/brown"
+                    app:boxStrokeWidth="2dp"
+                    app:boxCornerRadiusBottomStart="5dp"
+                    app:boxCornerRadiusBottomEnd="5dp"
+                    app:boxCornerRadiusTopEnd="5dp"
+                    app:boxCornerRadiusTopStart="5dp"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:boxBackgroundMode="outline"
                     android:hint="@string/nickname">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -60,13 +68,13 @@
                         android:layout_height="58dp"
                         android:paddingStart="10dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/input_background"
                         android:singleLine="true"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/email_text_input_layout"
+                    android:translationZ="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -75,6 +83,14 @@
                     android:textColor="@color/brown"
                     android:textColorHint="@color/brown"
                     android:textColorHighlight="@color/brown"
+                    app:boxStrokeColor="@color/brown"
+                    app:boxStrokeWidth="2dp"
+                    app:boxCornerRadiusBottomStart="5dp"
+                    app:boxCornerRadiusBottomEnd="5dp"
+                    app:boxCornerRadiusTopEnd="5dp"
+                    app:boxCornerRadiusTopStart="5dp"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:boxBackgroundMode="outline"
                     android:hint="@string/email_address">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -83,7 +99,6 @@
                         android:layout_height="58dp"
                         android:paddingStart="10dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/input_background"
                         android:inputType="textEmailAddress"
                         android:singleLine="true"/>
 

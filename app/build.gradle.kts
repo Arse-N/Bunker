@@ -46,15 +46,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.code.gson:gson:2.10")
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
-
-//    implementation ("org.apache.httpcomponents:httpclient:4.5.14")
-//    implementation("com.sendgrid:sendgrid-java:4.8.0")
-//    implementation("com.sendgrid:sendgrid-java:4.4.1") {
-//        exclude(group = "org.apache.httpcomponents", module = "httpclient")
-//    }
-
-
-
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
