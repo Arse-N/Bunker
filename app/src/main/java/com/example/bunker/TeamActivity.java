@@ -106,13 +106,13 @@ public class TeamActivity extends AppCompatActivity implements TeamAdapter.OnIte
         ImageView addItemDialogX = addTeammateDialog.findViewById(R.id.dialog_X);
         finalAdd = addTeammateDialog.findViewById(R.id.add_button);
         nameEditText = addTeammateDialog.findViewById(R.id.name_text);
-        emailEditText = addTeammateDialog.findViewById(R.id.email_text);
+//        emailEditText = addTeammateDialog.findViewById(R.id.email_text);
         nameTextInputLayout = addTeammateDialog.findViewById(R.id.name_text_input_layout);
-        emailTextInputLayout = addTeammateDialog.findViewById(R.id.email_text_input_layout);
+//        emailTextInputLayout = addTeammateDialog.findViewById(R.id.email_text_input_layout);
 
         InputFilter[] inputFilters = new InputFilter[]{new InputFilter.LengthFilter(100)};
         nameEditText.setFilters(inputFilters);
-        emailEditText.setFilters(inputFilters);
+//        emailEditText.setFilters(inputFilters);
         addTeammateDialog.show();
 
         addItemDialogX.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +126,7 @@ public class TeamActivity extends AppCompatActivity implements TeamAdapter.OnIte
             @Override
             public void onClick(View v) {
                 if (validateForm()) {
-                    addTeammate(nameEditText.getText().toString(), emailEditText.getText().toString());
+                    addTeammate(nameEditText.getText().toString());
                     addTeammateDialog.dismiss();
                 }
             }
@@ -134,8 +134,8 @@ public class TeamActivity extends AppCompatActivity implements TeamAdapter.OnIte
         addTextWatchers();
     }
 
-    private void addTeammate(String name, String email) {
-        teammatesList.add(new Teammate(name, email));
+    private void addTeammate(String name) {
+        teammatesList.add(new Teammate(name));
         teamAdapter.notifyItemInserted(teammatesList.size() - 1);
         JsonUtil.writeToJson(this, teammatesList);
 
@@ -165,16 +165,16 @@ public class TeamActivity extends AppCompatActivity implements TeamAdapter.OnIte
             nameTextInputLayout.setError(null);
         }
 
-        String email = emailEditText.getText().toString().trim();
-        if (email.isEmpty()) {
-            emailTextInputLayout.setError("Email is required");
-            valid = false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailTextInputLayout.setError("Invalid email address");
-            valid = false;
-        } else {
-            emailTextInputLayout.setError(null);
-        }
+//        String email = emailEditText.getText().toString().trim();
+//        if (email.isEmpty()) {
+//            emailTextInputLayout.setError("Email is required");
+//            valid = false;
+//        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+//            emailTextInputLayout.setError("Invalid email address");
+//            valid = false;
+//        } else {
+//            emailTextInputLayout.setError(null);
+//        }
 
         return valid;
     }
@@ -197,22 +197,22 @@ public class TeamActivity extends AppCompatActivity implements TeamAdapter.OnIte
             }
         });
 
-        emailEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().trim().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
-                    emailTextInputLayout.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+//        emailEditText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (!s.toString().trim().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
+//                    emailTextInputLayout.setError(null);
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            }
+//        });
     }
 
     private void showToast(String text){

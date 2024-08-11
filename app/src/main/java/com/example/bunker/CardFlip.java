@@ -32,7 +32,7 @@ public class CardFlip extends AppCompatActivity {
     private int height;
     private int counter = 0;
 
-    private String username, email, profession, phobia, illness, baggageInfo, addInfo;
+    private String username, profession, phobia, illness, baggageInfo, addInfo;
 
     private int age;
 
@@ -92,7 +92,7 @@ public class CardFlip extends AppCompatActivity {
         Random rand = new Random();
         age = rand.nextInt(Information.age[1] - Information.age[0] + 1) + Information.age[0];
         username = teammatesList.get(counter).getName();
-        email = teammatesList.get(counter).getEmail();
+//        email = teammatesList.get(counter).getEmail();
         profession = professions.get(counter);
         professionText.setText(profession);
         ageText.setText(String.valueOf(age));
@@ -115,7 +115,7 @@ public class CardFlip extends AppCompatActivity {
                     cardBack.setTranslationZ(-50);
                     cardFront.setTranslationZ(0);
                     setCardInfo();
-                    sendEmail();
+//                    sendEmail();
                     counter++;
                     if (counter < teammatesList.size()) {
                         cardName.setText(teammatesList.get(counter).getName());
@@ -131,21 +131,21 @@ public class CardFlip extends AppCompatActivity {
         }).start();
     }
 
-    private void sendEmail() {
-        Map<String, String> dynamicData = new HashMap<>();
-        dynamicData.put("email", email);
-        dynamicData.put("username", username);
-        dynamicData.put("profession", profession);
-        dynamicData.put("age", String.valueOf(age));
-        dynamicData.put("phobia", phobia);
-        dynamicData.put("baggage", baggageInfo);
-        dynamicData.put("illness", illness);
-        dynamicData.put("add_info", addInfo);
-        try {
-            SendGridEmailSender.sendEmailWithTemplate(email,  dynamicData);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void sendEmail() {
+//        Map<String, String> dynamicData = new HashMap<>();
+//        dynamicData.put("email", email);
+//        dynamicData.put("username", username);
+//        dynamicData.put("profession", profession);
+//        dynamicData.put("age", String.valueOf(age));
+//        dynamicData.put("phobia", phobia);
+//        dynamicData.put("baggage", baggageInfo);
+//        dynamicData.put("illness", illness);
+//        dynamicData.put("add_info", addInfo);
+//        try {
+//            SendGridEmailSender.sendEmailWithTemplate(email,  dynamicData);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

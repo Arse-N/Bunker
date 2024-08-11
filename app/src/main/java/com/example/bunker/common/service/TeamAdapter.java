@@ -35,7 +35,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.PersonViewHold
         Teammate person = personList.get(position);
         holder.teammateItem.setBackgroundResource(R.drawable.button_background);
         holder.nameTextView.setText(person.getName());
-        holder.emailTextView.setText(person.getEmail());
+//        holder.emailTextView.setText(person.getEmail());
         holder.removeButton.setOnClickListener(v -> {
             onItemRemoveListener.onItemRemove(position);
 
@@ -50,14 +50,14 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.PersonViewHold
     static class PersonViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout teammateItem;
         TextView nameTextView;
-        TextView emailTextView;
+//        TextView emailTextView;
         ImageView removeButton;
 
         public PersonViewHolder(@NonNull View itemView) {
             super(itemView);
             teammateItem = itemView.findViewById(R.id.teammate_item);
             nameTextView = itemView.findViewById(R.id.name_value);
-            emailTextView = itemView.findViewById(R.id.email_value);
+//            emailTextView = itemView.findViewById(R.id.email_value);
             removeButton = itemView.findViewById(R.id.delete);
         }
     }
