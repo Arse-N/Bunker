@@ -1,21 +1,20 @@
 package com.example.bunker;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -26,12 +25,10 @@ import com.example.bunker.common.model.Teammate;
 import com.example.bunker.common.service.TeamAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import android.Manifest;
-
 
 import java.util.ArrayList;
 
-public class TeamActivity extends AppCompatActivity implements TeamAdapter.OnItemRemoveListener {
+public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemoveListener {
 
     private RecyclerView recyclerView;
 
@@ -43,8 +40,7 @@ public class TeamActivity extends AppCompatActivity implements TeamAdapter.OnIte
     private ArrayList<Teammate> teammatesList;
     private TeamAdapter teamAdapter;
 
-    private CardView header;
-    private LinearLayout footer;
+    private TextView headerTitle;
 
     private static final String FILE_NAME = "team.json";
 
@@ -54,15 +50,12 @@ public class TeamActivity extends AppCompatActivity implements TeamAdapter.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
         teammatesList = new ArrayList<>();
-        header = findViewById(R.id.header);
-        footer = findViewById(R.id.footer);
-        header.setBackgroundResource(R.color.brown);
-//        footer.setBackgroundResource(R.drawable.footer);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
-
+        headerTitle = findViewById(R.id.header_title);
+        headerTitle.setText(R.string.teammates);
         teammatesList = JsonUtil.readFromJson(this);
         if (teammatesList == null) {
             teammatesList = new ArrayList<>();
@@ -88,12 +81,16 @@ public class TeamActivity extends AppCompatActivity implements TeamAdapter.OnIte
                 if (teammatesList.size() >= 4) {
                     Intent intent = new Intent(TeamActivity.this, CardFlip.class);
                     startActivity(intent);
-                    finish();
                 } else {
                     showToast("minimum number of players is 4!");
                 }
             }
         });
+    }
+
+    @Override
+    protected int getContentViewId() {
+        return R.layout.activity_team;
     }
 
     private void initializeDialog() {

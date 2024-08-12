@@ -9,32 +9,27 @@ import android.os.Bundle;
 public class MenuPage extends AppCompatActivity {
 
     private Button startButton;
-    private Button exitButton;
+    private Button howToPlayButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_page);
         startButton = findViewById(R.id.start);
-        exitButton = findViewById(R.id.exit);
+        howToPlayButton = findViewById(R.id.how_to_play);
         startButton.setBackgroundResource(R.drawable.button_background);
-        exitButton.setBackgroundResource(R.drawable.button_background);
+        howToPlayButton.setBackgroundResource(R.drawable.button_background);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuPage.this, TeamActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
-        exitButton.setOnClickListener(new View.OnClickListener() {
+        howToPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                finish();
-//                System.exit(0);
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent intent = new Intent(MenuPage.this, RulesActivity.class);
                 startActivity(intent);
             }
         });

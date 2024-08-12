@@ -12,7 +12,6 @@ import androidx.cardview.widget.CardView;
 import com.example.bunker.common.constants.Information;
 import com.example.bunker.common.fileio.JsonUtil;
 import com.example.bunker.common.model.Teammate;
-import com.example.bunker.common.service.SendGridEmailSender;
 
 import java.util.*;
 
