@@ -34,21 +34,18 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
 
     private Dialog addTeammateDialog;
     private Button add, start, finalAdd;
-    private TextInputEditText nameEditText, emailEditText;
-    private TextInputLayout nameTextInputLayout, emailTextInputLayout;
+    private TextInputEditText nameEditText;
+    private TextInputLayout nameTextInputLayout;
 
     private ArrayList<Teammate> teammatesList;
     private TeamAdapter teamAdapter;
 
     private TextView headerTitle;
 
-    private static final String FILE_NAME = "team.json";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team);
         teammatesList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -91,6 +88,7 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
     @Override
     protected int getContentViewId() {
         return R.layout.activity_team;
+
     }
 
     private void initializeDialog() {
@@ -103,13 +101,10 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
         ImageView addItemDialogX = addTeammateDialog.findViewById(R.id.dialog_X);
         finalAdd = addTeammateDialog.findViewById(R.id.add_button);
         nameEditText = addTeammateDialog.findViewById(R.id.name_text);
-//        emailEditText = addTeammateDialog.findViewById(R.id.email_text);
         nameTextInputLayout = addTeammateDialog.findViewById(R.id.name_text_input_layout);
-//        emailTextInputLayout = addTeammateDialog.findViewById(R.id.email_text_input_layout);
 
         InputFilter[] inputFilters = new InputFilter[]{new InputFilter.LengthFilter(100)};
         nameEditText.setFilters(inputFilters);
-//        emailEditText.setFilters(inputFilters);
         addTeammateDialog.show();
 
         addItemDialogX.setOnClickListener(new View.OnClickListener() {
@@ -162,17 +157,6 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
             nameTextInputLayout.setError(null);
         }
 
-//        String email = emailEditText.getText().toString().trim();
-//        if (email.isEmpty()) {
-//            emailTextInputLayout.setError("Email is required");
-//            valid = false;
-//        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-//            emailTextInputLayout.setError("Invalid email address");
-//            valid = false;
-//        } else {
-//            emailTextInputLayout.setError(null);
-//        }
-
         return valid;
     }
 
@@ -194,22 +178,6 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
             }
         });
 
-//        emailEditText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (!s.toString().trim().isEmpty() && Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
-//                    emailTextInputLayout.setError(null);
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//        });
     }
 
     private void showToast(String text){

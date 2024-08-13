@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private ImageView backButton;
+    private ImageView backButton, settingsButton;
     protected TextView headerTitle;
 
     @Override
@@ -19,6 +19,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         backButton = findViewById(R.id.back);
         headerTitle = findViewById(R.id.header_title);
+        settingsButton = findViewById(R.id.settings);
 
         if (backButton != null) {
             backButton.setOnClickListener(new View.OnClickListener() {
@@ -28,18 +29,27 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             });
         }
+
+        if (settingsButton != null) {
+            settingsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BaseActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     private void handleBackNavigation() {
         if (shouldCloseApp()) {
-            finish(); // Close the activity if there's no previous activity
+            finish();
         } else {
-            onBackPressed(); // Navigate to the previous activity
+            onBackPressed();
         }
     }
 
     private boolean shouldCloseApp() {
-        // Check if there's no previous activity in the back stack
         return getSupportFragmentManager().getBackStackEntryCount() == 0;
     }
 

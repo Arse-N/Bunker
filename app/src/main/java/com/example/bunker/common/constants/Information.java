@@ -1,7 +1,5 @@
 package com.example.bunker.common.constants;
 
-import java.util.HashMap;
-
 public final class Information {
     public static final String[] professions = {
             "Վարսահարդար", "Մատնահարդար", "Հրուշակագործ", "Ատամնաբույժ", "Դեղագործ", "Շինարար",
