@@ -2,8 +2,10 @@ package com.example.bunker;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +14,8 @@ import androidx.cardview.widget.CardView;
 import com.example.bunker.common.constants.Information;
 import com.example.bunker.common.fileio.JsonUtil;
 import com.example.bunker.common.model.Teammate;
+import com.example.bunker.common.service.QRCodeGenerator;
+import com.example.bunker.common.util.QRCodeUtils;
 
 import java.util.*;
 
@@ -40,6 +44,8 @@ public class CardFlip extends AppCompatActivity {
 
     private ArrayList<Teammate> teammatesList;
 
+    private ImageView qrCodeImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +64,17 @@ public class CardFlip extends AppCompatActivity {
         RelativeLayout card = findViewById(R.id.mainCard);
         teammatesList = JsonUtil.readFromJson(this);
         cardName.setText(teammatesList.get(0).getName());
+
+        qrCodeImageView = findViewById(R.id.qrCodeImageView);
+
+        qrCodeImageView = findViewById(R.id.qrCodeImageView);
+
+        // Example HTML content
+        String htmlContent = "<html><body><h1>Player Data</h1><p>Name: John Doe</p></body></html>";
+        String dataUrl = QRCodeUtils.encodeHtmlToDataUrl(htmlContent);
+
+        Bitmap qrCodeBitmap = QRCodeUtils.generateQRCode(dataUrl, 400, 400);
+        qrCodeImageView.setImageBitmap(qrCodeBitmap);
         randomizeCardInfo();
         card.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -91,7 +108,6 @@ public class CardFlip extends AppCompatActivity {
         Random rand = new Random();
         age = rand.nextInt(Information.age[1] - Information.age[0] + 1) + Information.age[0];
         username = teammatesList.get(counter).getName();
-//        email = teammatesList.get(counter).getEmail();
         profession = professions.get(counter);
         professionText.setText(profession);
         ageText.setText(String.valueOf(age));
@@ -119,6 +135,7 @@ public class CardFlip extends AppCompatActivity {
                     if (counter < teammatesList.size()) {
                         cardName.setText(teammatesList.get(counter).getName());
                     }
+
                 } else {
                     cardBack.setTranslationZ(0);
                     cardFront.setTranslationZ(-50);

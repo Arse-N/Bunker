@@ -5,7 +5,9 @@ import android.view.View;
 import android.widget.ImageView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import com.example.bunker.common.service.EmailSender;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -38,12 +40,27 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
         }
+
+
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
-        @Override
+        private EmailSender emailSender;
+
+
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+            emailSender = new EmailSender(requireContext());
+
+            Preference reportBugPreference = findPreference("report_bug");
+            if (reportBugPreference != null) {
+                reportBugPreference.setOnPreferenceClickListener(preference -> {
+
+                    emailSender.reportBug();
+                    return true;
+                });
+            }
         }
+
     }
 }
