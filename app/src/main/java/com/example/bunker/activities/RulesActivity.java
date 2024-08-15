@@ -1,11 +1,12 @@
-package com.example.bunker;
+package com.example.bunker.activities;
 
 import android.os.Bundle;
 import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
-import com.example.bunker.common.service.RulesAdapter;
+import com.example.bunker.R;
+import com.example.bunker.adapters.RulesAdapter;
 
 public class RulesActivity extends BaseActivity {
 

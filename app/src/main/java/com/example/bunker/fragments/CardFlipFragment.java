@@ -1,32 +1,37 @@
-package com.example.bunker;
-
+package com.example.bunker.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import com.example.bunker.MainActivity;
+import com.example.bunker.R;
 import com.example.bunker.common.constants.Information;
-import com.example.bunker.common.fileio.JsonUtil;
 import com.example.bunker.common.model.Teammate;
-import com.example.bunker.common.service.QRCodeGenerator;
-import com.example.bunker.common.util.QRCodeUtils;
+import com.example.bunker.util.JsonUtil;
+import com.example.bunker.util.QRCodeUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
-import java.util.*;
-
-public class CardFlip extends AppCompatActivity {
+public class CardFlipFragment extends Fragment {
 
     private CardView cardBack, cardFront;
-
     private boolean isFlipped = false;
 
     private final List<String> professions = Arrays.asList(Information.professions);
-
     private final List<String> phobias = Arrays.asList(Information.phobias);
     private final List<String> illnesses = Arrays.asList(Information.illnesses);
     private final List<String> baggage = Arrays.asList(Information.baggage);
@@ -36,38 +41,34 @@ public class CardFlip extends AppCompatActivity {
     private int counter = 0;
 
     private String username, profession, phobia, illness, baggageInfo, addInfo;
-
     private int age;
 
     private TextView professionText, ageText, phobiaText, illnessText, baggageText, addInfoText, cardName;
-
-
     private ArrayList<Teammate> teammatesList;
-
     private ImageView qrCodeImageView;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card_flip);
-        cardBack = findViewById(R.id.cardBack);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_card_flip, container, false);
+
+        cardBack = view.findViewById(R.id.cardBack);
         cardBack.setBackground(getResources().getDrawable(R.drawable.card_background));
-        cardFront = findViewById(R.id.cardFront);
+        cardFront = view.findViewById(R.id.cardFront);
         cardFront.setBackground(getResources().getDrawable(R.drawable.card_front_side));
-        cardName = findViewById(R.id.card_name);
-        professionText = findViewById(R.id.profession_value);
-        ageText = findViewById(R.id.age_value);
-        phobiaText = findViewById(R.id.phobia_value);
-        illnessText = findViewById(R.id.illness_value);
-        baggageText = findViewById(R.id.baggage_value);
-        addInfoText = findViewById(R.id.add_info_value);
-        RelativeLayout card = findViewById(R.id.mainCard);
-        teammatesList = JsonUtil.readFromJson(this);
+        cardName = view.findViewById(R.id.card_name);
+        professionText = view.findViewById(R.id.profession_value);
+        ageText = view.findViewById(R.id.age_value);
+        phobiaText = view.findViewById(R.id.phobia_value);
+        illnessText = view.findViewById(R.id.illness_value);
+        baggageText = view.findViewById(R.id.baggage_value);
+        addInfoText = view.findViewById(R.id.add_info_value);
+        RelativeLayout card = view.findViewById(R.id.mainCard);
+
+        teammatesList = JsonUtil.readFromJson(requireContext());
         cardName.setText(teammatesList.get(0).getName());
 
-        qrCodeImageView = findViewById(R.id.qrCodeImageView);
-
-        qrCodeImageView = findViewById(R.id.qrCodeImageView);
+        qrCodeImageView = view.findViewById(R.id.qrCodeImageView);
 
         // Example HTML content
         String htmlContent = "<html><body><h1>Player Data</h1><p>Name: John Doe</p></body></html>";
@@ -75,25 +76,30 @@ public class CardFlip extends AppCompatActivity {
 
         Bitmap qrCodeBitmap = QRCodeUtils.generateQRCode(dataUrl, 400, 400);
         qrCodeImageView.setImageBitmap(qrCodeBitmap);
+
         randomizeCardInfo();
+
         card.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 height = (card.getHeight()) / 2;
             }
         });
+
         card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (counter < teammatesList.size()) {
                     flipAnimation();
                 } else {
-                    Intent intent = new Intent(CardFlip.this, MainActivity.class);
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
-                    finish();
+                    getActivity().finish();
                 }
             }
         });
+
+        return view;
     }
 
     private void randomizeCardInfo() {
@@ -130,12 +136,10 @@ public class CardFlip extends AppCompatActivity {
                     cardBack.setTranslationZ(-50);
                     cardFront.setTranslationZ(0);
                     setCardInfo();
-//                    sendEmail();
                     counter++;
                     if (counter < teammatesList.size()) {
                         cardName.setText(teammatesList.get(counter).getName());
                     }
-
                 } else {
                     cardBack.setTranslationZ(0);
                     cardFront.setTranslationZ(-50);
@@ -146,22 +150,4 @@ public class CardFlip extends AppCompatActivity {
             }
         }).start();
     }
-
-//    private void sendEmail() {
-//        Map<String, String> dynamicData = new HashMap<>();
-//        dynamicData.put("email", email);
-//        dynamicData.put("username", username);
-//        dynamicData.put("profession", profession);
-//        dynamicData.put("age", String.valueOf(age));
-//        dynamicData.put("phobia", phobia);
-//        dynamicData.put("baggage", baggageInfo);
-//        dynamicData.put("illness", illness);
-//        dynamicData.put("add_info", addInfo);
-//        try {
-//            SendGridEmailSender.sendEmailWithTemplate(email,  dynamicData);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 }

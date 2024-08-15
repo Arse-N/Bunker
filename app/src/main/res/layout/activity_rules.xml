@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:background="@color/brown"
         android:fitsSystemWindows="true"
-        tools:context=".RulesActivity">
+        tools:context=".activities.RulesActivity">
 
     <include layout="@layout/header_layout"/>
 

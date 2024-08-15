@@ -1,4 +1,4 @@
-package com.example.bunker.common.util;
+package com.example.bunker.util;
 
 import java.nio.charset.StandardCharsets;
 import android.util.Base64;

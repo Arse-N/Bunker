@@ -1,12 +1,13 @@
-package com.example.bunker;
+package com.example.bunker.activities;
 
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.example.bunker.R;
 
-public class MenuPage extends AppCompatActivity {
+public class MenuPageActivity extends AppCompatActivity {
 
     private Button startButton;
     private Button howToPlayButton;
@@ -22,14 +23,14 @@ public class MenuPage extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenuPage.this, TeamActivity.class);
+                Intent intent = new Intent(MenuPageActivity.this, TeamActivity.class);
                 startActivity(intent);
             }
         });
         howToPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenuPage.this, RulesActivity.class);
+                Intent intent = new Intent(MenuPageActivity.this, RulesActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,4 +1,4 @@
-package com.example.bunker.common.service;
+package com.example.bunker.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

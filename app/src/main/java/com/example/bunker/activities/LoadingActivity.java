@@ -1,9 +1,10 @@
-package com.example.bunker;
+package com.example.bunker.activities;
 
 import android.content.Intent;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.example.bunker.R;
 
 public class LoadingActivity extends AppCompatActivity {
 
@@ -16,7 +17,7 @@ public class LoadingActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(LoadingActivity.this, MenuPage.class);
+                Intent intent = new Intent(LoadingActivity.this, MenuPageActivity.class);
                 startActivity(intent);
                 finish();
             }

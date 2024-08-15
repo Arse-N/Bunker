@@ -1,4 +1,4 @@
-package com.example.bunker.common.service;
+package com.example.bunker.service;
 
 import android.graphics.Bitmap;
 import com.google.zxing.BarcodeFormat;

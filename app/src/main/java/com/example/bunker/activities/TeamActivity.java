@@ -1,4 +1,4 @@
-package com.example.bunker;
+package com.example.bunker.activities;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -20,9 +20,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.bunker.common.fileio.JsonUtil;
+import com.example.bunker.activities.CardFlipActivity;
+import com.example.bunker.R;
+import com.example.bunker.util.JsonUtil;
 import com.example.bunker.common.model.Teammate;
-import com.example.bunker.common.service.TeamAdapter;
+import com.example.bunker.adapters.TeamAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -76,7 +78,7 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
             @Override
             public void onClick(View v) {
                 if (teammatesList.size() >= 4) {
-                    Intent intent = new Intent(TeamActivity.this, CardFlip.class);
+                    Intent intent = new Intent(TeamActivity.this, CardFlipActivity.class);
                     startActivity(intent);
                 } else {
                     showToast("minimum number of players is 4!");

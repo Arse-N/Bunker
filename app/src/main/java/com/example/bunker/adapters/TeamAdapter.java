@@ -1,4 +1,4 @@
-package com.example.bunker.common.service;// PersonAdapter.java
+package com.example.bunker.adapters;// PersonAdapter.java
 
 import android.view.LayoutInflater;
 import android.view.View;

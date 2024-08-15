@@ -1,4 +1,4 @@
-package com.example.bunker;
+package com.example.bunker.activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +7,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import com.example.bunker.common.service.EmailSender;
+import com.example.bunker.R;
+import com.example.bunker.service.EmailSender;
 
 public class SettingsActivity extends AppCompatActivity {
 
