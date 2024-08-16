@@ -20,10 +20,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.bunker.activities.CardFlipActivity;
 import com.example.bunker.R;
 import com.example.bunker.util.JsonUtil;
-import com.example.bunker.common.model.Teammate;
+import com.example.bunker.model.Teammate;
 import com.example.bunker.adapters.TeamAdapter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -48,17 +47,13 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        teammatesList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
         headerTitle = findViewById(R.id.header_title);
         headerTitle.setText(R.string.teammates);
-        teammatesList = JsonUtil.readFromJson(this);
-        if (teammatesList == null) {
-            teammatesList = new ArrayList<>();
-        }
+        teammatesList = JsonUtil.readFromPlayersJson(this);
         teamAdapter = new TeamAdapter(teammatesList, this);
 
         recyclerView = findViewById(R.id.teammates);
@@ -131,7 +126,7 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
     private void addTeammate(String name) {
         teammatesList.add(new Teammate(name));
         teamAdapter.notifyItemInserted(teammatesList.size() - 1);
-        JsonUtil.writeToJson(this, teammatesList);
+        JsonUtil.writeToPlayersJson(this, teammatesList);
 
     }
 
@@ -141,7 +136,7 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
         teammatesList.remove(position);
         teamAdapter.notifyItemRemoved(position);
         teamAdapter.notifyItemRangeChanged(position, teammatesList.size());
-        JsonUtil.writeToJson(this, teammatesList);
+        JsonUtil.writeToPlayersJson(this, teammatesList);
 
     }
 

@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.bunker.R;
-import com.example.bunker.common.model.Teammate;
+import com.example.bunker.model.Teammate;
 
 import java.util.ArrayList;
 

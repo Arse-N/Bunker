@@ -1,4 +1,4 @@
-package com.example.bunker.common.model;
+package com.example.bunker.model;
 
 public class Teammate {
     private String name;

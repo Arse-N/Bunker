@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import com.example.bunker.R;
+import com.example.bunker.fragments.SettingsFragment;
 import com.example.bunker.service.EmailSender;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -45,23 +46,5 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat {
-        private EmailSender emailSender;
 
-
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            emailSender = new EmailSender(requireContext());
-
-            Preference reportBugPreference = findPreference("report_bug");
-            if (reportBugPreference != null) {
-                reportBugPreference.setOnPreferenceClickListener(preference -> {
-
-                    emailSender.reportBug();
-                    return true;
-                });
-            }
-        }
-
-    }
 }

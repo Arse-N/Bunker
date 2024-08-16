@@ -16,15 +16,13 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import com.example.bunker.MainActivity;
 import com.example.bunker.R;
-import com.example.bunker.common.constants.Information;
-import com.example.bunker.common.model.Teammate;
+import com.example.bunker.constants.Information;
+import com.example.bunker.model.GameInfo;
+import com.example.bunker.model.Teammate;
 import com.example.bunker.util.JsonUtil;
 import com.example.bunker.util.QRCodeUtils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
 
 public class CardFlipFragment extends Fragment {
 
@@ -37,6 +35,8 @@ public class CardFlipFragment extends Fragment {
     private final List<String> baggage = Arrays.asList(Information.baggage);
     private final List<String> addInfos = Arrays.asList(Information.addInfo);
 
+    private final List<String> gender = Arrays.asList(Information.gender);
+
     private int height;
     private int counter = 0;
 
@@ -45,6 +45,14 @@ public class CardFlipFragment extends Fragment {
 
     private TextView professionText, ageText, phobiaText, illnessText, baggageText, addInfoText, cardName;
     private ArrayList<Teammate> teammatesList;
+
+    private GameInfo gameInfo;
+
+    private ArrayList<String> chosenGender;
+    private Random random;
+
+    private int menCount = 0;
+    private int womenCount = 0;
     private ImageView qrCodeImageView;
 
     @Nullable
@@ -64,13 +72,12 @@ public class CardFlipFragment extends Fragment {
         baggageText = view.findViewById(R.id.baggage_value);
         addInfoText = view.findViewById(R.id.add_info_value);
         RelativeLayout card = view.findViewById(R.id.mainCard);
-
-        teammatesList = JsonUtil.readFromJson(requireContext());
+        chosenGender = new ArrayList<>();
+        random = new Random();
+        teammatesList = JsonUtil.readFromPlayersJson(requireContext());
+        gameInfo = JsonUtil.readFromGameInfoJson(requireContext());
         cardName.setText(teammatesList.get(0).getName());
-
         qrCodeImageView = view.findViewById(R.id.qrCodeImageView);
-
-        // Example HTML content
         String htmlContent = "<html><body><h1>Player Data</h1><p>Name: John Doe</p></body></html>";
         String dataUrl = QRCodeUtils.encodeHtmlToDataUrl(htmlContent);
 
@@ -92,6 +99,9 @@ public class CardFlipFragment extends Fragment {
                 if (counter < teammatesList.size()) {
                     flipAnimation();
                 } else {
+                    menCount = 0;
+                    womenCount = 0;
+                    chosenGender = new ArrayList<>();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
                     getActivity().finish();
@@ -110,13 +120,18 @@ public class CardFlipFragment extends Fragment {
         Collections.shuffle(addInfos);
     }
 
-    private void setCardInfo() {
-        Random rand = new Random();
-        age = rand.nextInt(Information.age[1] - Information.age[0] + 1) + Information.age[0];
+    private void setCardInfo(boolean isGenderIncluded) {
+        age = random.nextInt(Information.age[1] - Information.age[0] + 1) + Information.age[0];
+        StringBuilder bio = new StringBuilder();
+        if (isGenderIncluded) {
+            bio.append(getGender()).append(", ").append(age);
+        } else {
+            bio.append(age);
+        }
         username = teammatesList.get(counter).getName();
         profession = professions.get(counter);
         professionText.setText(profession);
-        ageText.setText(String.valueOf(age));
+        ageText.setText(bio);
         phobia = phobias.get(counter);
         phobiaText.setText(phobia);
         illness = illnesses.get(counter);
@@ -135,7 +150,7 @@ public class CardFlipFragment extends Fragment {
                 if (!isFlipped) {
                     cardBack.setTranslationZ(-50);
                     cardFront.setTranslationZ(0);
-                    setCardInfo();
+                    setCardInfo(gameInfo.isGenderIncluded());
                     counter++;
                     if (counter < teammatesList.size()) {
                         cardName.setText(teammatesList.get(counter).getName());
@@ -149,5 +164,33 @@ public class CardFlipFragment extends Fragment {
                 isFlipped = !isFlipped;
             }
         }).start();
+    }
+
+    private String getGender() {
+        String man = gender.get(1);
+        String woman = gender.get(0);
+        String selected = gender.get(random.nextInt(gender.size()));
+        if (chosenGender.size() < 4) {
+            if (menCount < 2 && womenCount < 2) {
+                chosenGender.add(selected);
+                if (selected.equals(man)) {
+                    menCount++;
+                } else if (selected.equals(woman)) {
+                    womenCount++;
+                }
+                return selected;
+            } else if (menCount < 2) {
+                chosenGender.add(man);
+                menCount++;
+                return man;
+            } else {
+                chosenGender.add(woman);
+                womenCount++;
+                return woman;
+            }
+        } else {
+            chosenGender.add(selected);
+            return selected;
+        }
     }
 }

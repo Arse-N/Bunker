@@ -1,11 +1,13 @@
 package com.example.bunker.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import com.example.bunker.R;
+import com.example.bunker.model.GameInfo;
+import com.example.bunker.util.JsonUtil;
 
 public class MenuPageActivity extends AppCompatActivity {
 
@@ -24,6 +26,11 @@ public class MenuPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuPageActivity.this, TeamActivity.class);
+                GameInfo gameInfo = JsonUtil.readFromGameInfoJson(MenuPageActivity.this);
+                if (gameInfo == null) {
+                    gameInfo = new GameInfo();
+                    JsonUtil.writeToGameInfoJson(MenuPageActivity.this, gameInfo);
+                }
                 startActivity(intent);
             }
         });

@@ -1,4 +1,4 @@
-package com.example.bunker.common.constants;
+package com.example.bunker.constants;
 
 public final class Information {
     public static final String[] professions = {
@@ -78,5 +78,9 @@ public final class Information {
             "Եղել ես նախագահի թիկնապահ", "Մասնակցել ես վազքի փառատոնի", "Մասնակցել ես կիբեռ սպորտի մրցույթի", "Եվրոպայի չեմպիոն ես",
             "Աշխարհի քառակի չեմպիոն ես", "Կուբիկ ռուբիկ հավագել գիտես", "Շախմատի աշխարհի չեմպիոն ես", "Սրճարանի սեփականատեր ես",
             "Ռեստորանի սեփականատեր ես", "Մասնակցել ես եվրոտեսիլին"
-    };;
+    };
+
+    public static final String[] gender = {
+            "կին", "տղամարդ"
+    };
 }
