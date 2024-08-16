@@ -36,6 +36,19 @@ public class EmailSender {
         }
     }
 
+    public void shareApp() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Share this app ...");
+
+        try {
+            context.startActivity(Intent.createChooser(shareIntent, "Share using:"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(context, "No apps installed to share this content.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     public static void sendEmailWithTemplate(String to, Map<String, String> dynamicData) {
         new SendEmailTask().execute(FROM_EMAIL, to, dynamicData);

@@ -23,6 +23,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private void setupPreferences() {
         setupReportBugPreference();
         setupIncludeGenderPreference();
+        setupSharePreference();
     }
 
     private void setupReportBugPreference() {
@@ -46,6 +47,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }
                 JsonUtil.writeToGameInfoJson(requireContext(), gameInfo);
 
+                return true;
+            });
+        }
+    }
+
+    private void setupSharePreference() {
+        Preference reportBugPreference = findPreference("share");
+        if (reportBugPreference != null) {
+            reportBugPreference.setOnPreferenceClickListener(preference -> {
+                emailSender.shareApp();
                 return true;
             });
         }
