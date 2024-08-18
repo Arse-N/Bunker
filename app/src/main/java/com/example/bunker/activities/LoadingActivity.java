@@ -2,17 +2,15 @@ package com.example.bunker.activities;
 
 import android.content.Intent;
 import android.os.Handler;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.example.bunker.R;
 
-public class LoadingActivity extends AppCompatActivity {
+public class LoadingActivity extends FullScreenActivity {
 
     Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading);
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -22,6 +20,11 @@ public class LoadingActivity extends AppCompatActivity {
                 finish();
             }
         },2000);
+    }
+
+    @Override
+    protected int getContentViewId() {
+        return R.layout.activity_loading;
     }
 
 }

@@ -4,12 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import androidx.appcompat.app.AppCompatActivity;
 import com.example.bunker.R;
 import com.example.bunker.model.GameInfo;
 import com.example.bunker.util.JsonUtil;
 
-public class MenuPageActivity extends AppCompatActivity {
+public class MenuPageActivity extends FullScreenActivity {
 
     private Button startButton;
     private Button howToPlayButton;
@@ -17,7 +16,6 @@ public class MenuPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_page);
         startButton = findViewById(R.id.start);
         howToPlayButton = findViewById(R.id.how_to_play);
         startButton.setBackgroundResource(R.drawable.button_background);
@@ -41,5 +39,10 @@ public class MenuPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected int getContentViewId() {
+        return R.layout.activity_menu_page;
     }
 }

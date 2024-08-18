@@ -2,9 +2,11 @@ package com.example.bunker.service;
 
 import android.graphics.Bitmap;
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class QRCodeGenerator {
 
@@ -21,6 +23,19 @@ public class QRCodeGenerator {
             }
 
             return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Bitmap generateQRCode(String url) {
+        try {
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(
+                    url, BarcodeFormat.QR_CODE, 200, 200
+            );
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            return barcodeEncoder.createBitmap(bitMatrix);
         } catch (WriterException e) {
             e.printStackTrace();
             return null;

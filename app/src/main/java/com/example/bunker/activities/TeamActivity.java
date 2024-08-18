@@ -1,31 +1,20 @@
 package com.example.bunker.activities;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.bunker.R;
-import com.example.bunker.util.JsonUtil;
-import com.example.bunker.model.Teammate;
 import com.example.bunker.adapters.TeamAdapter;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import com.example.bunker.model.Teammate;
+import com.example.bunker.util.JsonUtil;
 
 import java.util.ArrayList;
 
@@ -33,16 +22,9 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
 
     private RecyclerView recyclerView;
 
-    private Dialog addTeammateDialog;
-    private Button add, start, finalAdd;
-    private TextInputEditText nameEditText;
-    private TextInputLayout nameTextInputLayout;
-
+    private Button add, start;
     private ArrayList<Teammate> teammatesList;
     private TeamAdapter teamAdapter;
-
-    private TextView headerTitle;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +33,7 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
-        headerTitle = findViewById(R.id.header_title);
-        headerTitle.setText(R.string.teammates);
+
         teammatesList = JsonUtil.readFromPlayersJson(this);
         teamAdapter = new TeamAdapter(teammatesList, this);
 
@@ -62,11 +43,13 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
 
         add = findViewById(R.id.add_button);
         start = findViewById(R.id.start);
-
+        add.setBackgroundResource(R.drawable.add_background);
+        start.setBackgroundResource(R.drawable.button_background);
+        checkTeammateItemsCount();
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initializeDialog();
+                addTeammate();
             }
         });
         start.setOnClickListener(new View.OnClickListener() {
@@ -88,94 +71,34 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
 
     }
 
-    private void initializeDialog() {
-        addTeammateDialog = new Dialog(TeamActivity.this);
-        addTeammateDialog.setContentView(R.layout.add_teammate);
-        CardView dialog = addTeammateDialog.findViewById(R.id.add_teammate_dialog);
-        addTeammateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setBackgroundResource(R.drawable.dialog_background);
-        addTeammateDialog.setCancelable(false);
-        ImageView addItemDialogX = addTeammateDialog.findViewById(R.id.dialog_X);
-        finalAdd = addTeammateDialog.findViewById(R.id.add_button);
-        nameEditText = addTeammateDialog.findViewById(R.id.name_text);
-        nameTextInputLayout = addTeammateDialog.findViewById(R.id.name_text_input_layout);
-
-        InputFilter[] inputFilters = new InputFilter[]{new InputFilter.LengthFilter(100)};
-        nameEditText.setFilters(inputFilters);
-        addTeammateDialog.show();
-
-        addItemDialogX.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addTeammateDialog.dismiss();
-            }
-        });
-
-        finalAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validateForm()) {
-                    addTeammate(nameEditText.getText().toString());
-                    addTeammateDialog.dismiss();
-                }
-            }
-        });
-        addTextWatchers();
-    }
-
-    private void addTeammate(String name) {
-        teammatesList.add(new Teammate(name));
+    private void addTeammate() {
+        teammatesList.add(new Teammate(""));
         teamAdapter.notifyItemInserted(teammatesList.size() - 1);
-        JsonUtil.writeToPlayersJson(this, teammatesList);
 
+        if (teammatesList.size() == 5) {
+            teamAdapter.notifyDataSetChanged();
+        }
+
+        JsonUtil.writeToPlayersJson(this, teammatesList);
     }
 
+    private void checkTeammateItemsCount() {
+        if (teammatesList.isEmpty()) {
+            for (int i = 1; i <= 4; i++) {
+                teammatesList.add(new Teammate(""));
+            }
+        }
+    }
 
     @Override
     public void onItemRemove(int position) {
         teammatesList.remove(position);
         teamAdapter.notifyItemRemoved(position);
-        teamAdapter.notifyItemRangeChanged(position, teammatesList.size());
+        teamAdapter.notifyDataSetChanged();
         JsonUtil.writeToPlayersJson(this, teammatesList);
-
     }
 
-    private boolean validateForm() {
-        boolean valid = true;
 
-        String name = nameEditText.getText().toString().trim();
-        if (name.isEmpty()) {
-            nameTextInputLayout.setError("Name is required");
-            valid = false;
-        } else if (name.length() > 15) {
-            nameTextInputLayout.setError("Name must be less than 15 characters");
-            valid = false;
-        } else {
-            nameTextInputLayout.setError(null);
-        }
-
-        return valid;
-    }
-
-    private void addTextWatchers() {
-        nameEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().trim().isEmpty()) {
-                    nameTextInputLayout.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-    }
 
     private void showToast(String text){
         Toast.makeText(TeamActivity.this, text, Toast.LENGTH_LONG).show();

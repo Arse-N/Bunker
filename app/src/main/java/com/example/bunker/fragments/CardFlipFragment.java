@@ -19,6 +19,8 @@ import com.example.bunker.R;
 import com.example.bunker.constants.Information;
 import com.example.bunker.model.GameInfo;
 import com.example.bunker.model.Teammate;
+import com.example.bunker.service.GithubManager;
+import com.example.bunker.service.HtmlFileGenerator;
 import com.example.bunker.util.JsonUtil;
 import com.example.bunker.util.QRCodeUtils;
 
@@ -46,7 +48,13 @@ public class CardFlipFragment extends Fragment {
     private TextView professionText, ageText, phobiaText, illnessText, baggageText, addInfoText, cardName;
     private ArrayList<Teammate> teammatesList;
 
+    private List<String> urls;
+
     private GameInfo gameInfo;
+
+    private GithubManager githubManager;
+
+    private HtmlFileGenerator htmlFileGenerator;
 
     private ArrayList<String> chosenGender;
     private Random random;
@@ -74,16 +82,12 @@ public class CardFlipFragment extends Fragment {
         RelativeLayout card = view.findViewById(R.id.mainCard);
         chosenGender = new ArrayList<>();
         random = new Random();
+        githubManager = new GithubManager();
+        htmlFileGenerator = new HtmlFileGenerator();
         teammatesList = JsonUtil.readFromPlayersJson(requireContext());
         gameInfo = JsonUtil.readFromGameInfoJson(requireContext());
         cardName.setText(teammatesList.get(0).getName());
         qrCodeImageView = view.findViewById(R.id.qrCodeImageView);
-        String htmlContent = "<html><body><h1>Player Data</h1><p>Name: John Doe</p></body></html>";
-        String dataUrl = QRCodeUtils.encodeHtmlToDataUrl(htmlContent);
-
-        Bitmap qrCodeBitmap = QRCodeUtils.generateQRCode(dataUrl, 400, 400);
-        qrCodeImageView.setImageBitmap(qrCodeBitmap);
-
         randomizeCardInfo();
 
         card.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -127,6 +131,13 @@ public class CardFlipFragment extends Fragment {
             bio.append(getGender()).append(", ").append(age);
         } else {
             bio.append(age);
+        }
+        try {
+            String url = generateFile(teammatesList.get(counter));
+            Bitmap qrCodeBitmap = QRCodeUtils.generateQRCodeByUrl(url);
+            qrCodeImageView.setImageBitmap(qrCodeBitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         username = teammatesList.get(counter).getName();
         profession = professions.get(counter);
@@ -192,5 +203,11 @@ public class CardFlipFragment extends Fragment {
             chosenGender.add(selected);
             return selected;
         }
+    }
+
+
+    public String generateFile(Teammate teammate) {
+        String htmlContent = htmlFileGenerator.createHtmlContentForPlayer(teammate.getName(), teammate.getName());
+        return githubManager.pushHtmlToGitHub(htmlContent, teammate.getName());
     }
 }

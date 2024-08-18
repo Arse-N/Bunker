@@ -16,30 +16,50 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.Bunker"
             tools:targetApi="31">
+
         <activity
                 android:name=".activities.RulesActivity"
-                android:exported="false"/>
+                android:exported="false"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Bunker"/>
+
         <activity
                 android:name=".activities.SettingsActivity"
-                android:exported="false"/>
+                android:exported="false"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Bunker"/>
+
         <activity
                 android:name=".activities.TeamActivity"
-                android:exported="false"/>
+                android:exported="false"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Bunker"/>
+
         <activity
                 android:name=".activities.MenuPageActivity"
-                android:exported="false"/>
+                android:exported="false"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Bunker"/>
+
         <activity
                 android:name=".activities.CardFlipActivity"
-                android:exported="false"/>
+                android:exported="false"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Bunker"/>
+
         <activity
                 android:name=".MainActivity"
-                android:exported="false"/>
+                android:exported="false"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Bunker"/>
+
         <activity
                 android:name=".activities.LoadingActivity"
-                android:exported="true">
+                android:exported="true"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Bunker">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
