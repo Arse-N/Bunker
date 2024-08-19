@@ -35,7 +35,7 @@ public class TeamActivity extends BaseActivity implements TeamAdapter.OnItemRemo
         }
 
         teammatesList = JsonUtil.readFromPlayersJson(this);
-        teamAdapter = new TeamAdapter(teammatesList, this);
+        teamAdapter = new TeamAdapter(this, teammatesList, this);
 
         recyclerView = findViewById(R.id.teammates);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

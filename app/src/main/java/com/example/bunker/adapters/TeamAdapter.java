@@ -1,6 +1,7 @@
 package com.example.bunker.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,8 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.bunker.R;
 import com.example.bunker.model.Teammate;
+import com.example.bunker.util.JsonUtil;
 import com.google.android.material.textfield.TextInputEditText;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -22,9 +23,12 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.PersonViewHold
     private ArrayList<Teammate> teammatesList;
     private OnItemRemoveListener onItemRemoveListener;
 
-    public TeamAdapter(ArrayList<Teammate> teammatesList, OnItemRemoveListener onItemRemoveListener) {
+    private Context context;
+
+    public TeamAdapter(Context context, ArrayList<Teammate> teammatesList, OnItemRemoveListener onItemRemoveListener) {
         this.teammatesList = teammatesList;
         this.onItemRemoveListener = onItemRemoveListener;
+        this.context = context;
     }
 
     @NonNull
@@ -39,20 +43,17 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.PersonViewHold
         Teammate teammate = teammatesList.get(position);
         holder.teammateItem.setBackgroundResource(R.drawable.item_background);
 
-        // Ensure the TextWatcher is removed to avoid duplication
         if (holder.textWatcher != null) {
             holder.nameTextView.removeTextChangedListener(holder.textWatcher);
         }
 
-        // Clear or set the nameTextView properly
         if (Objects.equals(teammate.getName(), "")) {
-            holder.nameTextView.setText(""); // Clear the text
-            holder.nameTextView.setHint("Մասնակից " + (position + 1)); // Set hint
+            holder.nameTextView.setText("");
+            holder.nameTextView.setHint("Մասնակից " + (position + 1));
         } else {
-            holder.nameTextView.setText(teammate.getName()); // Set the actual name
+            holder.nameTextView.setText(teammate.getName());
         }
 
-        // Control the visibility of the remove button
         if (teammatesList.size() > 4) {
             holder.removeButton.setVisibility(View.VISIBLE);
         } else {
@@ -65,8 +66,8 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.PersonViewHold
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Update the Teammate object with the new text
                 teammate.setName(s.toString());
+                JsonUtil.writeToPlayersJson(context, teammatesList);
             }
 
             @Override

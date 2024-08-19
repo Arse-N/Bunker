@@ -2,19 +2,20 @@
     <string name="app_name">Bunker</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="start">Սկսել</string>
+    <string name="next">Հաջորդը</string>
     <string name="how_to_play">Ինչպե՞ս Խաղալ</string>
     <string name="game_rules">Խաղի Կանոնները</string>
     <string name="settings">Կարգավորումներ</string>
     <string name="exit">Ելք</string>
     <string name="app_name_am">ԲՈւՆԿԵՐ</string>
-    <string name="profession">Մասնագ.:</string>
+    <string name="profession">Մասնագիտություն:</string>
     <string name="age">Տարիք։</string>
     <string name="user_info">Անձնական Տվյալներ</string>
     <string name="phobia">Վախ։</string>
-    <string name="illness">Հիվանդ․։</string>
+    <string name="illness">Հիվանդություն։</string>
     <string name="hobby">Հոբբի։</string>
     <string name="baggage">Ճամպրուկ։</string>
-    <string name="add_info">հավ․ ինֆ․։</string>
+    <string name="add_info">հավելյալ ինֆորմացիա։</string>
     <string name="add">ավելացնել</string>
     <string name="nickname">Մականուն</string>
     <string name="email_address">Էլ․ հասցե</string>
@@ -69,4 +70,5 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus vestibulum. Fusce
         dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="teammate">"Մասնակից "</string>
 </resources>
