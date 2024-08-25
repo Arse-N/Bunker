@@ -1,13 +1,11 @@
 package com.example.bunker.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,12 +16,15 @@ import androidx.fragment.app.Fragment;
 import com.example.bunker.MainActivity;
 import com.example.bunker.R;
 import com.example.bunker.constants.Information;
+import com.example.bunker.dto.CardInfo;
 import com.example.bunker.model.GameInfo;
 import com.example.bunker.model.Teammate;
 import com.example.bunker.service.GithubManager;
 import com.example.bunker.service.HtmlFileGenerator;
+import com.example.bunker.util.BaseUtil;
 import com.example.bunker.util.JsonUtil;
 import com.example.bunker.util.QRCodeUtils;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -40,16 +41,10 @@ public class CardFlipFragment extends Fragment {
 
     private final List<String> gender = Arrays.asList(Information.gender);
 
-    private int height;
     private int counter = 0;
-
-    private String username, profession, phobia, illness, baggageInfo, addInfo;
-    private int age;
 
     private TextView professionText, ageText, phobiaText, illnessText, baggageText, addInfoText, cardName;
     private ArrayList<Teammate> teammatesList;
-
-    private List<String> urls;
 
     private GameInfo gameInfo;
 
@@ -62,6 +57,7 @@ public class CardFlipFragment extends Fragment {
 
     private int menCount = 0;
     private int womenCount = 0;
+    private ArrayList<CardInfo> playersCardInfos;
     private ImageView qrCodeImageView;
     private Button next;
 
@@ -89,14 +85,9 @@ public class CardFlipFragment extends Fragment {
         gameInfo = JsonUtil.readFromGameInfoJson(requireContext());
         qrCodeImageView = view.findViewById(R.id.qrCodeImageView);
         randomizeCardInfo();
-        setCardInfo(gameInfo.isGenderIncluded());
+        generateData(gameInfo.isGenderIncluded());
+        setCardInfo();
         setCameraDistance();
-        card.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                height = (card.getHeight()) / 2;
-            }
-        });
 
         card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +100,8 @@ public class CardFlipFragment extends Fragment {
             public void onClick(View v) {
                 if (counter < teammatesList.size()) {
                     cardName.setText(teammatesList.get(counter).getName());
-                    setCardInfo(gameInfo.isGenderIncluded());
+                    setCardInfo();
+                    next.setVisibility(View.GONE);
                 } else {
                     menCount = 0;
                     womenCount = 0;
@@ -122,7 +114,6 @@ public class CardFlipFragment extends Fragment {
                 if(counter == teammatesList.size()-1){
                     next.setText(getString(R.string.start));
                 }
-                counter++;
             }
         });
         return view;
@@ -136,59 +127,56 @@ public class CardFlipFragment extends Fragment {
         Collections.shuffle(addInfos);
     }
 
-    private void setCardInfo(boolean isGenderIncluded) {
-        age = random.nextInt(Information.age[1] - Information.age[0] + 1) + Information.age[0];
+    private void generateData(boolean isGenderIncluded) {
+        JSONObject playersData = new JSONObject();
+        playersCardInfos = new ArrayList<>();
+        for (int i = 0; i < teammatesList.size(); i++) {
+            CardInfo cardInfo = getCardInfo(isGenderIncluded, i);
+            cardInfo.setId(BaseUtil.generateCode());
+            JsonUtil.createJson(cardInfo, playersData);
+            playersCardInfos.add(cardInfo);
+        }
+        String url = generateFile(playersData);
+        for(CardInfo playerInfo: playersCardInfos){
+            try {
+                Bitmap qrCodeBitmap = QRCodeUtils.generateQRCodeByUrl(url + playerInfo.getId());
+                playerInfo.setQrCodeBitmap(qrCodeBitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private CardInfo getCardInfo(boolean isGenderIncluded, int id) {
         StringBuilder bio = new StringBuilder();
-        username = teammatesList.get(counter).getName();
-        cardName.setText(username.isEmpty() ? getString(R.string.teammate) + (counter+1) : username);
+        int age = random.nextInt(Information.age[1] - Information.age[0] + 1) + Information.age[0];
+        String username = teammatesList.get(id).getName();
+        String profession = professions.get(id);
+        String phobia = phobias.get(id);
+        String illness = illnesses.get(id);
+        String baggageInfo = baggage.get(id);
+        String addInfo = addInfos.get(id);
         if (isGenderIncluded) {
             bio.append(getGender()).append(", ").append(age);
         } else {
             bio.append(age);
         }
-        try {
-            String url = generateFile(teammatesList.get(counter));
-            Bitmap qrCodeBitmap = QRCodeUtils.generateQRCodeByUrl(url);
-            qrCodeImageView.setImageBitmap(qrCodeBitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        username = teammatesList.get(counter).getName();
-        profession = professions.get(counter);
-        professionText.setText(profession);
-        ageText.setText(bio);
-        phobia = phobias.get(counter);
-        phobiaText.setText(phobia);
-        illness = illnesses.get(counter);
-        illnessText.setText(illness);
-        baggageInfo = baggage.get(counter);
-        baggageText.setText(baggageInfo);
-        addInfo = addInfos.get(counter);
-        addInfoText.setText(addInfo);
+        CardInfo cardInfo = new CardInfo(username, profession, bio.toString(), phobia, illness, baggageInfo, addInfo);
+        return cardInfo;
     }
 
-    private void flipAnimation() {
-        cardBack.animate().setDuration(200).translationY(height).start();
-        cardFront.animate().setDuration(200).translationY(-1 * height).withEndAction(new Runnable() {
-            @Override
-            public void run() {
-                if (!isFrontVisible) {
-                    cardBack.setTranslationZ(-50);
-                    cardFront.setTranslationZ(0);
-                    setCardInfo(gameInfo.isGenderIncluded());
-                    counter++;
-                    if (counter < teammatesList.size()) {
-                        cardName.setText(teammatesList.get(counter).getName());
-                    }
-                } else {
-                    cardBack.setTranslationZ(0);
-                    cardFront.setTranslationZ(-50);
-                }
-                cardBack.animate().setDuration(200).translationY(0).start();
-                cardFront.animate().setDuration(200).translationY(0).start();
-                isFrontVisible = !isFrontVisible;
-            }
-        }).start();
+    private void setCardInfo() {
+        CardInfo cardInfo = playersCardInfos.get(counter);
+        cardName.setText(cardInfo.getUsername().isEmpty() ? getString(R.string.teammate) + (counter + 1) : cardInfo.getUsername());
+        professionText.setText(cardInfo.getProfession());
+        ageText.setText(cardInfo.getBio());
+        phobiaText.setText(cardInfo.getPhobia());
+        illnessText.setText(cardInfo.getIllness());
+        baggageText.setText(cardInfo.getBaggage());
+        addInfoText.setText(cardInfo.getAdditionalInfo());
+        qrCodeImageView.setImageBitmap(cardInfo.getQrCodeBitmap());
+        counter++;
     }
 
     private void setCameraDistance() {
@@ -268,8 +256,8 @@ public class CardFlipFragment extends Fragment {
     }
 
 
-    public String generateFile(Teammate teammate) {
-        String htmlContent = htmlFileGenerator.createHtmlContentForPlayer(teammate.getName(), teammate.getName());
-        return githubManager.pushHtmlToGitHub(htmlContent, teammate.getName());
+    public String generateFile(JSONObject playersDataJson) {
+        return githubManager.pushJSONToGitHub(playersDataJson);
     }
+
 }

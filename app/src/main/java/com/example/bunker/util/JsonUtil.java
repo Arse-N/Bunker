@@ -1,14 +1,18 @@
 package com.example.bunker.util;
 import android.content.Context;
+import com.example.bunker.dto.CardInfo;
 import com.example.bunker.model.GameInfo;
 import com.example.bunker.model.Teammate;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -71,4 +75,24 @@ public class JsonUtil {
             return null;
         }
     }
+
+    public static void createJson(CardInfo cardInfo, JSONObject playersData) {
+        try {
+            JSONObject cardInfoJson = new JSONObject();
+
+            for (Field field : cardInfo.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                String key = field.getName();
+                if (!"id".equals(key)) {
+                    Object value = field.get(cardInfo);
+                    cardInfoJson.put(key, value);
+                }
+            }
+            String playerId = cardInfo.getId();
+            playersData.put(playerId, cardInfoJson);
+        } catch (JSONException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

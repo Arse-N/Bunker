@@ -301,6 +301,8 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_background"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            android:translationZ="200dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="50dp"/>
