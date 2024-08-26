@@ -48,7 +48,7 @@
                 android:theme="@style/Theme.Bunker"/>
 
         <activity
-                android:name=".MainActivity"
+                android:name=".activities.GameActivity"
                 android:exported="false"
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.Bunker"/>

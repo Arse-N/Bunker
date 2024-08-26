@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import com.example.bunker.MainActivity;
 import com.example.bunker.R;
+import com.example.bunker.activities.GameActivity;
 import com.example.bunker.constants.Information;
 import com.example.bunker.dto.CardInfo;
 import com.example.bunker.model.GameInfo;
@@ -33,13 +33,13 @@ public class CardFlipFragment extends Fragment {
     private ConstraintLayout cardBack, cardFront;
     private boolean isFrontVisible = false;
 
-    private final List<String> professions = Arrays.asList(Information.professions);
-    private final List<String> phobias = Arrays.asList(Information.phobias);
-    private final List<String> illnesses = Arrays.asList(Information.illnesses);
-    private final List<String> baggage = Arrays.asList(Information.baggage);
-    private final List<String> addInfos = Arrays.asList(Information.addInfo);
+    private final List<String> professions = Arrays.asList(Information.PROFFESIONS);
+    private final List<String> phobias = Arrays.asList(Information.PHOBIAS);
+    private final List<String> illnesses = Arrays.asList(Information.ILLNESSES);
+    private final List<String> baggage = Arrays.asList(Information.BAGGAGE);
+    private final List<String> addInfos = Arrays.asList(Information.ADD_INFO);
 
-    private final List<String> gender = Arrays.asList(Information.gender);
+    private final List<String> gender = Arrays.asList(Information.GENDER);
 
     private int counter = 0;
 
@@ -79,7 +79,7 @@ public class CardFlipFragment extends Fragment {
         ConstraintLayout card = view.findViewById(R.id.mainCard);
         chosenGender = new ArrayList<>();
         random = new Random();
-        githubManager = new GithubManager();
+        githubManager = new GithubManager(requireContext());
         htmlFileGenerator = new HtmlFileGenerator();
         teammatesList = JsonUtil.readFromPlayersJson(requireContext());
         gameInfo = JsonUtil.readFromGameInfoJson(requireContext());
@@ -106,7 +106,7 @@ public class CardFlipFragment extends Fragment {
                     menCount = 0;
                     womenCount = 0;
                     chosenGender = new ArrayList<>();
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    Intent intent = new Intent(getActivity(), GameActivity.class);
                     startActivity(intent);
                     getActivity().finish();
                 }
@@ -150,7 +150,7 @@ public class CardFlipFragment extends Fragment {
 
     private CardInfo getCardInfo(boolean isGenderIncluded, int id) {
         StringBuilder bio = new StringBuilder();
-        int age = random.nextInt(Information.age[1] - Information.age[0] + 1) + Information.age[0];
+        int age = random.nextInt(Information.AGE[1] - Information.AGE[0] + 1) + Information.AGE[0];
         String username = teammatesList.get(id).getName();
         String profession = professions.get(id);
         String phobia = phobias.get(id);

@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Bundle;
 import com.example.bunker.R;
 
-public class LoadingActivity extends FullScreenActivity {
+public class LoadingActivity extends BaseActivity {
 
     Handler handler;
     @Override

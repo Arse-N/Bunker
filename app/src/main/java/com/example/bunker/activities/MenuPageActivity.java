@@ -8,18 +8,17 @@ import com.example.bunker.R;
 import com.example.bunker.model.GameInfo;
 import com.example.bunker.util.JsonUtil;
 
-public class MenuPageActivity extends FullScreenActivity {
+public class MenuPageActivity extends BaseActivity {
 
-    private Button startButton;
-    private Button howToPlayButton;
+    private Button startButton, exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startButton = findViewById(R.id.start);
-        howToPlayButton = findViewById(R.id.how_to_play);
+        exitButton = findViewById(R.id.exit);
         startButton.setBackgroundResource(R.drawable.button_background);
-        howToPlayButton.setBackgroundResource(R.drawable.button_background);
+        exitButton.setBackgroundResource(R.drawable.button_background);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,11 +31,10 @@ public class MenuPageActivity extends FullScreenActivity {
                 startActivity(intent);
             }
         });
-        howToPlayButton.setOnClickListener(new View.OnClickListener() {
+        exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MenuPageActivity.this, RulesActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

@@ -22,7 +22,7 @@ public class RulesActivity extends BaseActivity {
 
         RecyclerView recyclerView = findViewById(R.id.rules_rec_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        RulesAdapter adapter = new RulesAdapter(RulesData.rules);
+        RulesAdapter adapter = new RulesAdapter(RulesData.RULES);
         recyclerView.setAdapter(adapter);
     }
 

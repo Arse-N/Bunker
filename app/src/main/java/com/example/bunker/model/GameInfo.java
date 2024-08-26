@@ -2,6 +2,7 @@ package com.example.bunker.model;
 
 public class GameInfo {
 
+    private String gameId;
     private boolean genderIncluded;
 
     public GameInfo() {
@@ -14,5 +15,13 @@ public class GameInfo {
 
     public void setGenderIncluded(boolean genderIncluded) {
         this.genderIncluded = genderIncluded;
+    }
+
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
     }
 }

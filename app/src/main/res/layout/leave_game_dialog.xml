@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/leave_game_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/dialog_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    <TextView
+            android:id="@+id/leave_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:padding="5dp"
+            android:text="Համոզված ե՞ք որ ցանկանում եք լքել խաղը։"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="48dp"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/leave_dialog_title" android:layout_marginBottom="20dp"
+            android:layout_marginTop="34dp">
+        <Button
+                android:text="@string/no"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:id="@+id/no"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="50dp"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:background="@drawable/button_background"
+                android:textSize="20sp"/>
+        <Button
+                android:text="@string/yes"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="15dp"
+                android:id="@+id/yes"
+                android:background="@drawable/button_background"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
